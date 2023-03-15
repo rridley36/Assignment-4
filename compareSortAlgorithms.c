@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int extraMemoryAllocated;
 
@@ -15,21 +16,60 @@ void mergeSort(int pData[], int l, int r)
 // extraMemoryAllocated counts bytes of memory allocated
 void insertionSort(int* pData, int n)
 {
-	
+	int i, item, j;
+	for (i = 1; i < n; i++) {
+		item = pData[i];
+			for(j=i-1; j>=0; j--) {
+				if(pData[j] > item) {
+					pData[j+1] = pData[j];
+				}
+				else {
+					break;
+				}			
+			}
+			pData[j+1] = item;
+	}
 }
 
 // implement bubble sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void bubbleSort(int* pData, int n)
 {
-	
+	for (int i = 0; i < n - 1; i++){
+		for (int j = 0; j < n - i - 1; j++){
+			if (pData[j] > pData[j+1]) {
+				int temp = pData[j];
+				extraMemoryAllocated = sizeof(temp);
+				pData [j] = pData[j+1];
+				pData[j+1] = temp;
+			}
+		}
+	}
 }
 
 // implement selection sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void selectionSort(int* pData, int n)
 {
-	
+	 int i, j, i_min,temp;
+    // One by one move boundary of unsorted subarray
+    for (i = 0; i < n-1; i++)
+    {
+        // Find the minimum element in unsorted array
+        i_min = i;
+        for (j = i+1; j < n; j++){
+			if (pData[j] < pData[i_min]){
+				i_min = j;
+		  	}
+        // Swap the found minimum element with the first element
+		}
+		if (i_min != i){
+				temp = pData[i]; // Swap Data 
+				extraMemoryAllocated = sizeof(temp);
+				pData[i] = pData[i_min];
+				pData[i_min] = temp;
+		   }
+    }
 }
 
 // parses input file to an integer array
@@ -39,13 +79,23 @@ int parseData(char *inputFileName, int **ppData)
 	int dataSz = 0;
 	*ppData = NULL;
 	
+	if (inFile == NULL){
+		printf("Input file cannot be opened.");
+		exit(-1);
+	}
+
 	if (inFile)
 	{
 		fscanf(inFile,"%d\n",&dataSz);
 		*ppData = (int *)malloc(sizeof(int) * dataSz);
-		// Implement parse data block
+		if (ppData == NULL){
+			printf("Memory allocation failed.");
+		}
+		for (int i = 0; i < dataSz; i++){
+			fscanf(inFile, "%d ", &((*ppData)[i]));
+		}
 	}
-	
+	fclose(inFile);
 	return dataSz;
 }
 
@@ -88,6 +138,7 @@ int main(void)
 		printf("Dataset Size : %d\n",dataSz);
 		printf("---------------------------\n");
 		
+		
 		printf("Selection Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -109,7 +160,7 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-
+	
 		printf("Bubble Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
 		extraMemoryAllocated = 0;
@@ -120,6 +171,7 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
+		/*
 		
 		printf("Merge Sort:\n");
 		memcpy(pDataCopy, pDataSrc, dataSz*sizeof(int));
@@ -131,9 +183,8 @@ int main(void)
 		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
-		
+		*/
 		free(pDataCopy);
 		free(pDataSrc);
 	}
-	
 }
