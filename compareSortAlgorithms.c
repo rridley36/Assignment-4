@@ -93,7 +93,6 @@ void bubbleSort(int* pData, int n)
 		for (int j = 0; j < n - i - 1; j++){
 			if (pData[j] > pData[j+1]) {
 				int temp = pData[j];
-				extraMemoryAllocated = sizeof(temp); // Bubble Sort only uses about 4 bytes of memory for a temporary holding variable
 				pData [j] = pData[j+1];
 				pData[j+1] = temp;
 			}
@@ -119,7 +118,6 @@ void selectionSort(int* pData, int n)
 		}
 		if (i_min != i){
 				temp = pData[i]; // Swap Data 
-				extraMemoryAllocated = sizeof(temp); // Selection Sort only uses about 4 bytes of memory for a temporary holding variable
 				pData[i] = pData[i_min];
 				pData[i_min] = temp;
 		   }
