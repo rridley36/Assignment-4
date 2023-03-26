@@ -15,9 +15,9 @@ void merge (int *pData, int l, int m, int r)
 	int n2 = r - m;
 
 	// Allocate space for holding array
-	int leftSide[n1];
-	int rightSide[n2];
-	extraMemoryAllocated = sizeof(leftSide) + sizeof(rightSide);
+	int *leftSide = (int*)malloc(n1 * sizeof(int));
+	int *rightSide = (int*)malloc(n2 * sizeof(int));;
+	extraMemoryAllocated += n1 * sizeof(int) + n2* sizeof(int);
 
 	for (i = 0; i < n1; i++){ // Loads data from larger array to smaller arrays
 		leftSide[i] = pData[l+i];
